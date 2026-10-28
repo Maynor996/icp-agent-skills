@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>代码AI一下午写完，上线却卡在备案？开源13个Agent Skills：ICP备案、微信支付、小程序、生成式AI备案全流程</title>
+<meta name="description" content="代码AI一下午写完，上线却卡在备案？开源13个Agent Skills：ICP备案、微信支付、小程序、生成式AI备案全流程 一句话介绍：golive-china-skills 是一套开源的 Agent Skills，让 Claude Code / Codex / Cursor 陪你把产品在中国大陆合规上线。能自动做的（">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f7f5f0;--card:#fff;--text:#1a1a1a;--muted:#5c5c5c;--accent:#1a73e8;--border:#e6e2d8;--code-bg:#f0eee8}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;font-size:17px;line-height:1.85;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+article{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:2rem 1.75rem 2.5rem;box-shadow:0 8px 30px rgba(0,0,0,.04)}
+h1{font-family:"Noto Serif SC",serif;font-size:clamp(1.55rem,4vw,2rem);line-height:1.4;margin:0 0 1.25rem;font-weight:700}
+h2{font-family:"Noto Serif SC",serif;font-size:1.35rem;margin:2.25rem 0 .9rem;padding-top:.5rem;border-top:1px solid var(--border);font-weight:700}
+h2:first-of-type{border-top:none;padding-top:0}h3{font-size:1.1rem;margin:1.5rem 0 .6rem}
+p{margin:.9rem 0}a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+ul,ol{padding-left:1.35rem;margin:.8rem 0}li{margin:.35rem 0}strong{font-weight:700}
+img{display:block;max-width:100%;height:auto;margin:1.1rem auto .35rem;border-radius:10px;border:1px solid var(--border);background:#fafafa}
+pre{background:var(--code-bg);border:1px solid var(--border);border-radius:10px;padding:1rem 1.1rem;overflow-x:auto;font-size:.88rem;line-height:1.55}
+code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em;background:var(--code-bg);padding:.1em .35em;border-radius:4px}
+pre code{background:none;padding:0}
+blockquote{margin:1rem 0;padding:.2rem 0 .2rem 1rem;border-left:3px solid var(--accent);color:var(--muted)}
+table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.95rem}
+th,td{border:1px solid var(--border);padding:.55rem .7rem;text-align:left;vertical-align:top}th{background:#f3f1eb}
+.meta{color:var(--muted);font-size:.92rem;margin-bottom:1.5rem}
+.pages-banner{margin:0 0 1.25rem;padding:.75rem 1rem;background:#eef5ff;border:1px solid #d0e2ff;border-radius:10px;font-size:.95rem}
+footer{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--border);color:var(--muted);font-size:.88rem}
+</style></head><body><div class="wrap"><article>
+<div class="pages-banner">在线阅读（GitHub Pages）：<a href="https://maynor996.github.io/icp-agent-skills/">https://maynor996.github.io/icp-agent-skills/</a></div>
+<h1>代码AI一下午写完，上线却卡在备案？开源13个Agent Skills：ICP备案、微信支付、小程序、生成式AI备案全流程</h1>
+<div class="meta">原文：<a href="https://blog.csdn.net/xianyu120/article/details/167084932">https://blog.csdn.net/xianyu120/article/details/167084932</a></div>
+<h2>代码AI一下午写完，上线却卡在备案？开源13个Agent Skills：ICP备案、微信支付、小程序、生成式AI备案全流程</h2>
+<blockquote>
+<p>一句话介绍：<strong>golive-china-skills</strong> 是一套开源的 Agent Skills，让 Claude Code / Codex / Cursor 陪你把产品在中国大陆合规上线。能自动做的（改 footer、写支付回调验签、扫描隐私收集行为、起草隐私政策、跑体检脚本）Agent 直接做；必须由你本人做的（实名、人脸核验、接初审电话、短信核验、签约、提交表单）它列清楚、按顺序提醒你。</p>
+<p>仓库地址：https://github.com/xianyu110/golive-china-skills （MIT 协议）</p>
+<p>⚠️ <strong>先声明：本文和仓库都不是法律意见。</strong> 内容是开发者经验与公开官方资料的整理，政策、平台规则、费率与审核尺度随时变化，各地执行口径也可能不同；上线前请以官方最新页面为准，涉及经营许可、支付、未成年人、跨境数据、生成式 AI 的事项请咨询专业律师或主管部门。</p>
+</blockquote>
+<p><img alt="GoLive China Skills 上线流程图：域名实名 → ICP 备案 → 公安备案 → 云与 CDN → 隐私政策 → 支付 → 小程序 → App 与软著 → 短信 → 国产大模型 → AI 备案 → 上线总检查" src="imgs/01.png" /></p>
+<h3>一、痛点：最后一公里，比写代码还长</h3>
+<p>现在用 AI 编程，一个下午把产品写完不稀奇。但如果要在国内上线，后面还有一长串事情：</p>
+<ul>
+<li><strong>ICP 备案、公安备案、域名实名</strong> ：材料、顺序、短信核验时限，哪一步漏了都得重来。</li>
+<li><strong>内地服务器和 CDN</strong> ：CDN 要在备案后才能加，Google Fonts、境外统计脚本这类依赖还会拖慢首屏。</li>
+<li><strong>微信支付、支付宝</strong> ：网站场景要求域名已备案；个人主体在支付、小程序支付、短信签名等环节会受限。</li>
+<li><strong>小程序审核、App 备案、软著、隐私政策、短信签名</strong> ……</li>
+<li><strong>做 AI 产品的还有一关</strong> ：生成式 AI 备案/登记、AI 生成内容标识、模型名称与备案号公示。</li>
+</ul>
+<p>网上的“备案攻略”很多，但大多是一篇长文，不会帮你改代码，也很少告诉你每一条规则出自哪个官方页面。这就是做这个仓库的原因。</p>
+<h3>二、项目是什么</h3>
+<p>13 个可单独安装的 Skill，Agent 按 <strong>探测 → 计划 → 人工确认 → 执行 → 验证</strong> 的顺序工作。和普通攻略的区别：</p>
+<table>
+<thead>
+<tr>
+<th>特点</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>📎 每条规则附官方来源</td>
+<td>工信部、公安部、网信办、人大网、微信支付商户平台、支付宝开放平台、微信开放文档、阿里云/腾讯云文档；核对日期 2026-10-04</td>
+</tr>
+<tr>
+<td>🤝 Agent / 人 分工表</td>
+<td>每个 skill 都写明“Agent 能自动化 vs 人必须做”，Agent 不代替你实名、签约或提交政府表单，不保管你的密钥</td>
+</tr>
+<tr>
+<td>🚫 常见驳回原因 + 修复</td>
+<td>备案、支付签约、小程序审核、短信签名、商店上架的高频驳回点</td>
+</tr>
+<tr>
+<td>🔗 依赖顺序</td>
+<td>主体一致性放第一位：域名实名主体 = 备案主体 = 商户主体 = 小程序主体 = 短信资质主体</td>
+</tr>
+<tr>
+<td>🛠 只读体检脚本</td>
+<td><code>golive_check.py</code> 检查 HTTPS、ICP/公安备案号、隐私政策入口、境外依赖、AI 标识</td>
+</tr>
+<tr>
+<td>⚖️ 保守</td>
+<td>不编造费用和时效，只引用官方页面写明的数字，不确定处明确标 ⚠️</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="上线前总检查清单：Agent 自动项与 Human 人工项逐条打勾" src="imgs/02.gif" /></p>
+<h3>三、技能清单（13 个）</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Skill</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>icp-beian</code></td>
+<td>ICP 备案：是否需要、经营性许可 vs 非经营性备案、材料、短信核验、备案号展示</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>gongan-beian</code></td>
+<td>公安联网备案：30 日内办理、填报项、公网安备号展示</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>domain-realname-dns</code></td>
+<td>域名实名与解析：可备案后缀、实名主体一致、DNS/HTTPS</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>china-cloud-cdn-deploy</code></td>
+<td>国内云服务器与 CDN：可备案服务器、CDN 与备案、境外依赖替换</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>wechat-pay</code></td>
+<td>微信支付 APIv3：入驻材料、产品选择、回调验签解密、幂等对账</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>alipay</code></td>
+<td>支付宝：签约条件、加签、异步通知验签返回 success</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>wechat-miniprogram-launch</code></td>
+<td>微信小程序：小程序备案、隐私保护指引、对照官方拒绝情形自查</td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>app-store-ruanzhu</code></td>
+<td>应用商店与软著：App 备案、iOS ICP 号、安卓商店版权证明、软著材料</td>
+</tr>
+<tr>
+<td>9</td>
+<td><code>pipl-privacy-policy</code></td>
+<td>个保法隐私政策与用户协议：代码扫描数据清单、单独同意、注销（附模板）</td>
+</tr>
+<tr>
+<td>10</td>
+<td><code>genai-algorithm-filing</code></td>
+<td>生成式 AI 备案/登记/算法备案、AI 内容标识、拟人化互动新规</td>
+</tr>
+<tr>
+<td>11</td>
+<td><code>sms-sign-template</code></td>
+<td>短信签名与模板：签名来源、模板写法、商业短信同意与退订</td>
+</tr>
+<tr>
+<td>12</td>
+<td><code>llm-api-in-china</code></td>
+<td>国内调用大模型：已备案国产模型 vs API 中转的合规取舍</td>
+</tr>
+<tr>
+<td>13</td>
+<td><code>golive-china-checklist</code></td>
+<td>上线前总检查清单 + 总调度 + 体检脚本</td>
+</tr>
+</tbody>
+</table>
+<p>每个 <code>SKILL.md</code> 都包含：前置条件、分步流程、检查清单、常见驳回原因与修复、Agent vs 人分工、官方来源链接、免责声明。</p>
+<h3>四、安装</h3>
+<pre><code># 一行安装（skills CLI）
+npx skills add xianyu110/golive-china-skills
+</code></pre>
+<p>或者手动复制：</p>
+<pre><code>git clone https://github.com/xianyu110/golive-china-skills.git &amp;&amp; cd golive-china-skills
+mkdir -p ~/.claude/skills &amp;&amp; cp -r skills/* ~/.claude/skills/   # Claude Code（或项目内 .claude/skills/）
+mkdir -p ~/.codex/skills  &amp;&amp; cp -r skills/* ~/.codex/skills/    # Codex
+mkdir -p .cursor/skills   &amp;&amp; cp -r skills/* .cursor/skills/     # Cursor（项目内）
+</code></pre>
+<p>Claude Code 插件市场：<code>/plugin marketplace add xianyu110/golive-china-skills</code>。只想要某一个，例如 <code>cp -r skills/icp-beian ~/.claude/skills/</code>。</p>
+<h3>五、实战：拿一个项目走一遍上线检查</h3>
+<h4>Step 1：先让 Agent 出计划，明确不让它替你提交</h4>
+<pre><code>用 golive-china-checklist 看一下这个仓库要在国内上线还差什么，先给我计划，不要替我提交任何东西
+</code></pre>
+<p>Agent 会先探测：产品形态（网站/H5/小程序/App）、服务器与 CDN 在哪、是否收款、是否发短信、是否收集个人信息、是否有 AI 生成功能、是否有 UGC。然后输出一张带依赖关系的计划表，每行标 Owner = Agent / Human / Both，没确定的标 ❓。</p>
+<p>skill 里的关键路径长这样：</p>
+<p><img alt="golive-china-checklist 中的依赖顺序（关键路径）" src="imgs/03.png" /></p>
+<h4>Step 2：跑只读体检脚本</h4>
+<p>脚本只用 Python 标准库，<strong>只读、不提交任何表单</strong> ：</p>
+<pre><code>python3 skills/golive-china-checklist/scripts/golive_check.py https://你的域名 --ai
+python3 skills/golive-china-checklist/scripts/golive_check.py https://你的域名 --json &gt; golive-report.json
+</code></pre>
+<p>我拿两个公开网站实际跑了一下做对比。先是一个典型的境外站点 <code>example.com</code>：HTTPS 没问题，但页面上没有 ICP 备案号和 beian.miit.gov.cn 链接（对境外站点这是正常的，脚本也提示了“若服务器/CDN 在内地则必需”）：</p>
+<p><img alt="golive_check.py 对 example.com 的实际输出" src="imgs/04.png" /></p>
+<p>再看一个国内已备案的站点（博客园首页），ICP 备案号、备案号链接、公网安备号都能识别出来：</p>
+<p><img alt="golive_check.py 对一个已备案站点的实际输出" src="imgs/05.png" /></p>
+<p>注意两点：一是隐私政策、用户协议、模型公示这类项目可能放在子页面，脚本只看首页，所以给的是 ⚠️ 提醒而不是结论；二是脚本自己也写明了——<strong>结果只是页面级自动检查，不代表合规结论</strong> ，人工项要对照 SKILL.md。</p>
+<h4>Step 3：Agent 能直接改代码的部分——以 ICP 和微信支付为例</h4>
+<p>ICP 备案通过后，Agent 可以直接改 footer：</p>
+<pre><code>&lt;a href="https://beian.miit.gov.cn/" target="_blank" rel="noreferrer"&gt;京ICP备XXXXXXXX号-1&lt;/a&gt;
+</code></pre>
+<p>而人必须做的部分，<code>icp-beian</code> 会按顺序列出来：人脸核验、拍摄证件原件、接云厂商初审电话、提交管局后收到 12381 短信须在 <strong>24 小时内</strong> 完成核验（逾期需重新提交），以及网站开通后 30 日内办理公安联网备案（公安部令第 33 号：自网络正式联通之日起三十日内，转 <code>gongan-beian</code>）。这些时限都附了阿里云帮助中心和公安部令的原文链接。</p>
+<p>微信支付这块，<code>wechat-pay</code> 把官方要求的回调处理顺序写成了步骤：取原始 body + <code>Wechatpay-*</code> 请求头 → SHA256-RSA 验签（序列号以 <code>PUB_KEY_ID_</code> 开头用微信支付公钥，否则用平台证书）→ 用 APIv3 密钥做 AES-256-GCM 解密 → 校验 mchid/appid/订单号/金额 → <strong>幂等</strong> 更新订单。skill 里附了一段 Node.js 示意（以官方文档为准）：</p>
+<pre><code>// Node.js 18+ 回调验签与解密示意（节选自 wechat-pay/SKILL.md）
+import crypto from "node:crypto";
+export function verifyAndDecrypt({ headers, rawBody, wechatpayPublicKeyPem, apiV3Key }) {
+  const msg = `${headers["wechatpay-timestamp"]}\n${headers["wechatpay-nonce"]}\n${rawBody}\n`;
+  const ok = crypto.verify("RSA-SHA256", Buffer.from(msg), wechatpayPublicKeyPem,
+                           Buffer.from(headers["wechatpay-signature"], "base64"));
+  if (!ok) throw new Error("bad signature");
+  const { resource } = JSON.parse(rawBody);
+  const buf = Buffer.from(resource.ciphertext, "base64");
+  const decipher = crypto.createDecipheriv("aes-256-gcm", Buffer.from(apiV3Key), Buffer.from(resource.nonce));
+  decipher.setAuthTag(buf.subarray(buf.length - 16));
+  decipher.setAAD(Buffer.from(resource.associated_data || ""));
+  return JSON.parse(Buffer.concat([decipher.update(buf.subarray(0, buf.length - 16)), decipher.final()]).toString());
+}
+</code></pre>
+<p>最常见的坑也在检查清单里：<strong>验签要用原始 body，不要先<code>JSON.parse</code> 再 <code>stringify</code></strong>；金额以“分”为单位并与本地订单比对；密钥和证书只放服务端。费用方面，skill 只引用微信支付页面原文（申请接入不收申请费；交易服务费率与经营类目有关），具体以你签约类目的页面为准。</p>
+<h4>Step 4：做 AI 产品的，单独过一遍 AI 合规</h4>
+<pre><code>用 genai-algorithm-filing 判断我的 AI 小程序走备案还是登记
+</code></pre>
+<p>skill 会按判断树给出倾向：自研/微调模型对外提供生成服务 → 大模型备案路径；仅通过 API 调用已备案模型 → 属地网信办登记路径；调用未备案或境外模型给境内公众提供服务 → ⚠️ 高风险。无论哪条路，<strong>AI 生成内容的显式 + 隐式标识</strong> 都要做，并在产品页公示模型名称与备案号/上线编号。最终路径由你和属地网信办/律师确认，skill 只给倾向，不下结论。</p>
+<h3>六、进阶技巧</h3>
+<p><strong>1. 隐私政策从代码里“长”出来</strong></p>
+<pre><code>用 pipl-privacy-policy 扫描代码，生成隐私政策和第三方 SDK 清单
+</code></pre>
+<p>Agent 会扫描注册表单、手机号验证码、日志里的 IP/UA、埋点和统计 SDK、崩溃上报，以及<strong>发给大模型的用户输入</strong> ，生成 <code>data-inventory.md</code>，再按个保法第十七条的告知要求起草政策，标出需要“单独同意”的项（如向第三方提供、敏感个人信息、出境）。发布前仍需律师审阅。</p>
+<p><strong>2. 开发和生产的模型配置分开</strong></p>
+<p><code>llm-api-in-china</code> 的建议是：<code>LLM_BASE_URL / LLM_API_KEY / LLM_MODEL</code> 走环境变量，开发和生产用不同配置，<strong>生产只允许已备案模型白名单</strong> 。多数国产模型提供 OpenAI 兼容接口，代码只需换 base_url。</p>
+<p><strong>3. 上线当天的最后四件事</strong></p>
+<p>体检脚本全部 ✅ 或已解释的 ⚠️；真实小额支付 + 退款走通；内地多地区拨测首屏；客服与投诉渠道可用。</p>
+<h3>七、开发时没有 Claude / API？</h3>
+<p>写这些代码时你可能需要一个能用的模型。下面是作者团队推荐的<strong>开发者工具</strong> （含推广链接），用于你本人写代码、做原型——<strong>不是</strong> 面向中国境内用户的生产合规方案：</p>
+<ul>
+<li><strong>方法一 · Claude 国内镜像站</strong> ：<code>https://claude-opus.top/</code> —— 浏览器里直接辅助编程</li>
+<li><strong>方法二 · 一站式 API</strong> ：<code>https://tryallapi.com/register?aff=5A6A</code> —— OpenAI 兼容，本地开发时一个 Key 切换多家模型</li>
+</ul>
+<p>产品上线后，生产环境请切换到已备案的国产模型，并按 <code>genai-algorithm-filing</code> 完成登记/备案。也请勿向任何第三方开发工具输入真实用户个人信息、密钥或保密代码，使用前阅读其条款并自行评估数据出境风险。</p>
+<h3>八、写在最后</h3>
+<p>这个仓库想做的，是把“上线前要问十个人、翻二十个页面”的事情，变成 Agent 能读懂、能执行、能检查的流程，同时<strong>把边界写清楚</strong> ：Agent 写代码、写文档、跑检查；实名、签约、提交和承担主体责任的，始终是你自己。</p>
+<p>再强调一次：本文不是法律意见，规则以官方最新页面为准。发现过时或错误的地方，欢迎提 Issue / PR 并附上官方链接。</p>
+<p>如果它帮你少走了弯路，欢迎点个 ⭐ Star：</p>
+<p>👉 <strong>https://github.com/xianyu110/golive-china-skills</strong></p>
+<p><strong>其他开源仓库：</strong></p>
+<ul>
+<li>电商出图 Skills（白底主图 / A+ / 小红书封面 / 详情长图）：https://github.com/xianyu110/ecommerce-image-skills</li>
+<li>电商短视频 Skills（商品图 → 带配音字幕的 9:16 视频）：https://github.com/xianyu110/ecommerce-video-skills</li>
+<li>品牌 IP 视觉套件 Skills（IP 形象 · Logo · VI · 包装 · 表情包）：https://github.com/xianyu110/brand-ip-kit-skills</li>
+</ul>
+<hr />
+<p>我是 MaynorAI 团队，分享 AI 编程、AI SaaS 工具出海、一人团队搭建经验。</p>
+<footer>镜像自 CSDN @xianyu120 · 内容以原文为准</footer>
+</article></div></body></html>

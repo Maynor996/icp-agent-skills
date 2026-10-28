@@ -1,0 +1,9 @@
+{
+  "slug": "icp-agent-skills",
+  "title": "代码AI一下午写完，上线却卡在备案？开源13个Agent Skills：ICP备案、微信支付、小程序、生成式AI备案全流程",
+  "csdn": "https://blog.csdn.net/xianyu120/article/details/167084932",
+  "pages": "https://maynor996.github.io/icp-agent-skills/",
+  "source": "scrape",
+  "imgs": 5,
+  "workdir": "/workspace/csdn-mirror/build/icp-agent-skills"
+}
